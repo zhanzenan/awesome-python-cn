@@ -1226,3 +1226,42 @@ Python 实现的算法和设计模式。
 * Python开发者 微博：[@Python开发者](http://weibo.com/u/5305630013)
 * Python开发者：人生苦短，我用 Python。Python 越来越受广大程序员的喜爱。「Python开发者」是最受欢迎的、专注分享 Python 技术的微信公众号，主要分享 Python 相关的技术文章、工具资源和资讯等。
 <br><img src="http://ww3.sinaimg.cn/small/63918611gw1epb2cbm6cmj2046046wek.jpg" width=150 height=150>
+
+## 案件审查报告智能生成应用（示例实现）
+
+本仓库新增了一个基于 FastAPI 的示例应用，用于演示如何按照“案件审查报告智能生成应用需求文档”完成最小可用系统：
+
+- 案件类型模板管理（创建/查询）；
+- 定稿参考报告管理（上传结构化文本信息）；
+- 案件材料与起诉意见书上传并自动抽取要点；
+- 法律库条目管理与按关键词推荐；
+- 按模板生成审查报告草稿（含可追溯信息）；
+- 导出 `.docx` 文档并记录流程日志。
+
+### 快速启动
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+服务启动后访问 `http://127.0.0.1:8000/docs` 使用 Swagger UI 调用接口。
+
+### 核心接口流程
+
+1. `POST /templates`：创建一审/二审模板。
+2. `POST /references`：录入历史定稿参考报告。
+3. `POST /laws`：导入法律库条目。
+4. `POST /cases`：新建案件。
+5. `POST /cases/{case_id}/materials`：上传证据材料。
+6. `POST /cases/{case_id}/indictment`：上传起诉意见书。
+7. `POST /reports/generate`：生成报告草稿。
+8. `POST /reports/{report_id}/export`：导出 Word 文档。
+
+### 测试
+
+```bash
+pytest -q
+```
